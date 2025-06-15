@@ -52,12 +52,12 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        // foreach ($karyawan as $k) {
-        //     Karyawan::create([
-        //         'nama' => $k['nama'],
-        //         'jabatan' => $k['jabatan'],
-        //     ]);
-        // }
+        foreach ($karyawan as $k) {
+            Karyawan::create([
+                'nama' => $k['nama'],
+                'jabatan' => $k['jabatan'],
+            ]);
+        }
 
         $kriteria = [
             [

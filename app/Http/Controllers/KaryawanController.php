@@ -80,27 +80,41 @@ class KaryawanController extends Controller
         $data = Karyawan::find($id);
         $data->nama = $request->nama;
         $data->jabatan = $request->jabatan;
-        $user = user::where('karyawan_id', $id)->first();
-        if ($request->username != $user->username) {
+
+        $user = User::where('karyawan_id', $id)->first();
+
+        if ($user && $request->username != $user->username) {
             $request->validate([
                 'username' => 'required|string|max:255|unique:users,username',
             ]);
-        };
+        }
+
         $data->save();
 
-
-
-        $user->username = $request->username;
-        $user->karyawan_id = $data->id;
-        $user->name = $request->nama;
-        if ($request->password != null) {
-            $user->password = Hash::make($request->password);
+        if ($user) {
+            $user->username = $request->username;
+            $user->karyawan_id = $data->id;
+            $user->name = $request->nama;
+            if ($request->password != null) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->role = 'Karyawan';
+            $user->save();
+        } else {
+            // Jika user belum ada, buat user baru
+            $request->validate([
+                'username' => 'required|string|max:255|unique:users,username',
+            ]);
+            $newUser = new User();
+            $newUser->karyawan_id = $data->id;
+            $newUser->name = $request->nama;
+            $newUser->username = $request->username;
+            $newUser->password = Hash::make($request->password);
+            $newUser->role = 'Karyawan';
+            $newUser->save();
         }
-        $user->role = 'Karyawan';
-        $user->save();
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan Berhasil di Update.');
-        //
     }
 
     /**
