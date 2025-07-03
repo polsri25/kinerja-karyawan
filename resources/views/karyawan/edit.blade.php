@@ -42,6 +42,16 @@
 						<input name="password" type="password" class="form-control has-feedback-left" placeholder="Password">
 						<span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
 					</div>
+					<div class="col-md-6 col-sm-6  form-group">
+						<input name="nim" type="text" class="form-control has-feedback-left" placeholder="NIM/NIP (optional)"
+							value="{{ isset($user) ? $user->nim : '' }}">
+						<span class="fa fa-id-card form-control-feedback left" aria-hidden="true"></span>
+					</div>
+					<div class="col-md-6 col-sm-6  form-group">
+						<input name="alamat" type="text" class="form-control has-feedback-left" placeholder="Alamat (optional)"
+							value="{{ isset($user) ? $user->alamat : '' }}">
+						<span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+					</div>
 				</div>
 				<div class="ln_solid"></div>
 				<div class="form-group row">

@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
         $karyawan = [
             [
                 'nama' => 'Anwar Zemmi',
-                'jabatan' => 'Kantor'
+                'jabatan' => 'Kantor',
+
             ],
             [
                 'nama' => 'Faisal Riza',

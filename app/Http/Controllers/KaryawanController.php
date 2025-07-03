@@ -43,6 +43,8 @@ class KaryawanController extends Controller
         $user = new User();
         $user->karyawan_id = $data->id;
         $user->name = $request->nama;
+        $user->nim = $request->nim;
+        $user->alamat = $request->alamat;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role = 'Karyawan';
@@ -80,6 +82,8 @@ class KaryawanController extends Controller
         $data = Karyawan::find($id);
         $data->nama = $request->nama;
         $data->jabatan = $request->jabatan;
+        $data->nim = $request->nim;
+        $data->alamat = $request->alamat;
 
         $user = User::where('karyawan_id', $id)->first();
 
