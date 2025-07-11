@@ -11,6 +11,7 @@ use App\Models\SubKriteria;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -33,32 +34,34 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123'),
         ]);
 
-        $karyawan = [
-            [
-                'nama' => 'Anwar Zemmi',
-                'jabatan' => 'Kantor',
 
-            ],
-            [
-                'nama' => 'Faisal Riza',
-                'jabatan' => 'Lapangan'
-            ],
-            [
-                'nama' => 'M. Lendra',
-                'jabatan' => 'Kantor'
-            ],
-            [
-                'nama' => 'Nicolas Alex',
-                'jabatan' => 'Lapangan'
-            ],
+        $dataKaryawan = [
+            ['nama' => 'Ahmad Budi', 'jabatan' => 'Kantor', 'nim' => '20230001', 'alamat' => 'Jl. Sudirman No.15, Palembang'],
+            ['nama' => 'Siti Aminah', 'jabatan' => 'Kantor', 'nim' => '20230002', 'alamat' => 'Jl. Jendral Sudirman No.32, Palembang'],
+            ['nama' => 'Joko Santoso', 'jabatan' => 'Lapangan', 'nim' => '20230003', 'alamat' => 'Jl. Alang-Alang Lebar No.55, Palembang'],
+            ['nama' => 'Rina Saraswati', 'jabatan' => 'Kantor', 'nim' => '20230004', 'alamat' => 'Jl. Suka Maju No.20, Palembang'],
+            ['nama' => 'Dedi Ruslan', 'jabatan' => 'Lapangan', 'nim' => '20230005', 'alamat' => 'Jl. Agung No.7, Palembang'],
+            ['nama' => 'Nani Oktaviani', 'jabatan' => 'Kantor', 'nim' => '20230006', 'alamat' => 'Jl. Mahakam No.8, Palembang'],
+            ['nama' => 'Rizal Anwar', 'jabatan' => 'Lapangan', 'nim' => '20230007', 'alamat' => 'Jl. Kolonel Atmo No.14, Palembang'],
+            ['nama' => 'Tia Sari', 'jabatan' => 'Kantor', 'nim' => '20230008', 'alamat' => 'Jl. Raden Fatah No.2, Palembang'],
+            ['nama' => 'Budi Santosa', 'jabatan' => 'Lapangan', 'nim' => '20230009', 'alamat' => 'Jl. Komjen Pol. M. Kasman No.15, Palembang'],
+            ['nama' => 'Wati Fitria', 'jabatan' => 'Kantor', 'nim' => '20230010', 'alamat' => 'Jl. Pahlawan No.6, Palembang'],
+            ['nama' => 'Eko Prasetyo', 'jabatan' => 'Lapangan', 'nim' => '20230011', 'alamat' => 'Jl. Basuki Rahmat No.11, Palembang'],
+            ['nama' => 'Lina Maulina', 'jabatan' => 'Kantor', 'nim' => '20230012', 'alamat' => 'Jl. Palembang No.31, Palembang'],
+            ['nama' => 'Taufik Hidayat', 'jabatan' => 'Lapangan', 'nim' => '20230013', 'alamat' => 'Jl. M. Noor No.23, Palembang'],
+            ['nama' => 'Mira Septiani', 'jabatan' => 'Kantor', 'nim' => '20230014', 'alamat' => 'Jl. Veteran No.18, Palembang'],
+            ['nama' => 'Andi Wibawa', 'jabatan' => 'Lapangan', 'nim' => '20230015', 'alamat' => 'Jl. Diponegoro No.40, Palembang'],
+            ['nama' => 'Citra Herawati', 'jabatan' => 'Kantor', 'nim' => '20230016', 'alamat' => 'Jl. Taman No.9, Palembang'],
+            ['nama' => 'Rudi Hartono', 'jabatan' => 'Lapangan', 'nim' => '20230017', 'alamat' => 'Jl. Raya No.5, Palembang'],
+            ['nama' => 'Nia Anjani', 'jabatan' => 'Kantor', 'nim' => '20230018', 'alamat' => 'Jl. Budi Utomo No.17, Palembang'],
+            ['nama' => 'Hendra Setiawan', 'jabatan' => 'Lapangan', 'nim' => '20230019', 'alamat' => 'Jl. H. M. Rasjidi No.28, Palembang'],
+            ['nama' => 'Tita Nurul', 'jabatan' => 'Kantor', 'nim' => '20230020', 'alamat' => 'Jl. Citra No.12, Palembang'],
+            ['nama' => 'Arif Rahman', 'jabatan' => 'Lapangan', 'nim' => '20230021', 'alamat' => 'Jl. Hang Tuah No.36, Palembang'],
+            ['nama' => 'Fitriani Maesaroh', 'jabatan' => 'Kantor', 'nim' => '20230022', 'alamat' => 'Jl. Kertanegara No.9, Palembang'],
         ];
 
-        foreach ($karyawan as $k) {
-            Karyawan::create([
-                'nama' => $k['nama'],
-                'jabatan' => $k['jabatan'],
-            ]);
-        }
+        DB::table('karyawans')->insert($dataKaryawan);
+
 
         $kriteria = [
             [

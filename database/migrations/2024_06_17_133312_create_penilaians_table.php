@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
             $table->string('tgl_penilaian');
             $table->json('data');
-
             $table->timestamps();
         });
     }

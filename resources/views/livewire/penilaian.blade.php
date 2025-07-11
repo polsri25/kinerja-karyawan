@@ -1,79 +1,117 @@
+<!-- resources/views/livewire/penilaian.blade.php -->
 <div>
-    <div class="x_panel">
-        <div class="x_title">
-            <h2>Form Design <small>different form elements</small></h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i
-                            class="fa fa-wrench"></i></a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Settings 1</a>
-                        <a class="dropdown-item" href="#">Settings 2</a>
-                    </div>
-                </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            <br>
-            @foreach ($karyawans as $karyawan)
-                <div class="form-group row">
-                    <div class="col-md-6 col-sm-6 form-group has-feedback">
-                        <input disabled wire:model="nama_karyawan.{{ $karyawan->id }}" type="text"
-                            class="form-control has-feedback-left" placeholder="Nama">
-                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                    </div>
+	@if (session()->has('message'))
+		<div class="alert alert-warning">
+			{{ session('message') }}
+		</div>
+	@endif
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title">Penilaian</h3>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<div>
+				<div class="form-group">
+					<label>Periode Penilaian</label>
+					<div class="d-flex">
+						<input type="date" wire:model="periode_dari" class="form-control mr-2" placeholder="Dari">
+						<span class="mx-2 align-self-center">sampai</span>
+						<input type="date" wire:model="periode_sampai" class="form-control" placeholder="Sampai">
+					</div>
+					@error('periode_dari')
+						<span class="text-danger">{{ $message }}</span>
+					@enderror
+					@error('periode_sampai')
+						<span class="text-danger">{{ $message }}</span>
+					@enderror
+				</div>
+				<div class="form-group">
+					<label>Pilih Jabatan</label>
+					<select wire:model="selectedJabatan" wire:change="jabatanChanged($event.target.value)" class="form-control">
+						<option value="">Pilih Jabatan</option>
+						@foreach ($jabatans as $jabatan)
+							<option value="{{ $jabatan }}">{{ $jabatan }}</option>
+						@endforeach
+					</select>
+				</div>
 
-                    <div class="col-md-6 col-sm-6 form-group has-feedback">
-                        <input disabled wire:model="jabatan_karyawan.{{ $karyawan->id }}" type="text"
-                            class="form-control" placeholder="Jabatan">
-                        <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    @foreach ($subkriteria as $item)
-                        <div class="col-md-2 col-sm-2 form-group">
-                            <label for="fullname">{{ $item->nama }} :</label>
-                            <select class="form-control"
-                                wire:model="nilai.{{ $karyawan->id }}.{{ $item->id }}.{{ $item->nama }}"
-                                type="number" id="fullname">
-                                <option></option>
-                                @foreach ($item->penilaian as $penilaian)
-                                    <option value="{{ $penilaian['skor'] }}">{{ $penilaian['skor'] }} ||
-                                        {{ $penilaian['rentang'] }}</option>
-                                @endforeach
-                            </select>
-                            {{-- <label for="fullname">{{ $item->nama }} :</label>
-                            <input wire:model="nilai.{{ $karyawan->id }}.{{ $item->id }}.{{ $item->nama }}"
-                                type="number" id="fullname" class="form-control" required=""> --}}
-                        </div>
-                        @error('nilai.' . $karyawan->id . '.' . $item->id . '.' . $item->nama)
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    @endforeach
-                </div>
-                <div class="ln_solid"></div>
-            @endforeach
+				@if (!empty($karyawanByJabatan))
+					<div class="form-group">
+						<label>Pilih Karyawan</label>
+						<select wire:model="selectedKaryawan" class="form-control">
+							<option value="">Pilih Karyawan</option>
+							@foreach ($karyawanByJabatan as $karyawan)
+								<option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
+							@endforeach
+						</select>
+					</div>
+				@endif
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <div class="form-group row">
-                <div class="col-sm-12">
-                    <button wire:click="hasilAkhir" type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </div>
+				<div class="text-right">
+					<button wire:click="tambahKaryawan" class="btn btn-block btn-outline-success" style="width: 20%">Tambah
+						Pegawai</button>
+				</div>
+				<hr>
+			</div>
 
-        </div>
-    </div>
+
+
+			@foreach ($selectedKaryawanList as $karyawan)
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Nama</label>
+							<input type="text" class="form-control" value="{{ $karyawan['nama'] }}">
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Jabatan</label>
+							<input type="text" class="form-control" value="{{ $karyawan['jabatan'] }}">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>NIM</label>
+							<input type="text" class="form-control" value="{{ $karyawan['nim'] }}">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Alamat</label>
+							<textarea class="form-control">{{ $karyawan['alamat'] }}</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					@foreach ($kriteria as $item)
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label>{{ $item->nama }}</label>
+								<input type="number" class="form-control"
+									wire:model="nilai.{{ $karyawan['id'] }}.{{ $item->id }}.{{ $item->nama }}">
+								@error('nilai.' . $karyawan['id'] . '.' . $item->id . '.' . $item->nama)
+									<span class="text-danger">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
+					@endforeach
+				</div>
+				<hr>
+			@endforeach
+
+
+			<div class="text-right">
+				<a wire:click="hasilAkhir" class="btn btn-outline-warning"
+					style="width: 20%; background-color: #f39c12; color: white;">
+					Simpan
+				</a>
+			</div>
+		</div>
+		<!-- /.card-body -->
+	</div>
 </div>
